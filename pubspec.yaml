@@ -53,6 +53,9 @@ dependencies:
   
   # UUID Generator
   uuid: ^4.3.3
+  
+  # Password Hashing
+  bcrypt: ^1.1.3
 
 dev_dependencies:
   flutter_test:

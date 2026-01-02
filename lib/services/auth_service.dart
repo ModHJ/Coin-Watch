@@ -1,4 +1,5 @@
 import 'package:uuid/uuid.dart';
+import 'package:bcrypt/bcrypt.dart';
 import '../models/user.dart';
 import '../services/storage_service.dart';
 
@@ -18,10 +19,13 @@ class AuthService {
     }
     
     // User doesn't exist, proceed with registration
+    // Hash the password before storing
+    final hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+    
     final user = User(
       id: _uuid.v4(),
       email: email,
-      password: password, // In production, hash this!
+      password: hashedPassword,
       name: name,
     );
     await StorageService.addUser(user);
@@ -39,7 +43,9 @@ class AuthService {
       throw Exception('Invalid email or password');
     }
     
-    if (user.password != password) {
+    // Verify password using bcrypt
+    final isValidPassword = BCrypt.checkpw(password, user.password);
+    if (!isValidPassword) {
       throw Exception('Invalid email or password');
     }
     

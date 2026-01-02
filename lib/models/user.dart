@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 class User extends HiveObject {
   final String id;
   final String email;
-  final String password; // In production, this should be hashed
+  final String password; // Stored as bcrypt hash
   final String? name;
 
   User({
